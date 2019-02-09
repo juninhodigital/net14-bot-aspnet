@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+
 using Microsoft.Bot.Connector;
 using SimpleBot.Logic;
 
@@ -12,7 +13,13 @@ namespace SimpleBot
     [BotAuthentication]
     public class MessagesController : ApiController
     {
+        #region| Properties |
+
         static SimpleBotUser g_bot = null;
+
+        #endregion
+
+        #region| Constructor |
 
         public MessagesController()
         {
@@ -23,10 +30,14 @@ namespace SimpleBot
             }
         }
 
+        #endregion
+
+        #region| Methods |
+
         [ResponseType(typeof(void))]
         public virtual async Task<HttpResponseMessage> Post([FromBody] Activity activity)
         {
-            if ( activity != null && activity.Type == ActivityTypes.Message)
+            if (activity != null && activity.Type == ActivityTypes.Message)
             {
                 await HandleActivityAsync(activity);
             }
@@ -56,6 +67,8 @@ namespace SimpleBot
             var reply = message.CreateReply(text);
 
             await connector.Conversations.ReplyToActivityAsync(reply);
-        }
+        } 
+
+        #endregion
     }
 }

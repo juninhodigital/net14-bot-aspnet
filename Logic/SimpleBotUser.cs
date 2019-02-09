@@ -1,15 +1,15 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Configuration;
 using System.Threading.Tasks;
-using System.Web;
+
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace SimpleBot.Logic
 {
     public class SimpleBotUser
     {
+        #region| Methods |
+
         public string Reply(SimpleMessage message)
         {
             SaveMessage(message.Text);
@@ -19,7 +19,7 @@ namespace SimpleBot.Logic
 
         private async Task SaveMessage(string message)
         {
-            var conn = "mongodb://localhost:27017";
+            var conn = ConfigurationManager.AppSettings["ConnectionString"];
 
             var client = new MongoClient(conn);
 
@@ -28,18 +28,15 @@ namespace SimpleBot.Logic
 
             var document = new BsonDocument
             {
-              {"message", message},
+                {"message", message},
             };
 
             await col.InsertOneAsync(document);
 
             client = null;
-            db     = null;
-        }
-    }
+            db = null;
+        } 
 
-    public class Message: BsonDocument
-    {
-        public string Text { get; set; }
+        #endregion
     }
 }
