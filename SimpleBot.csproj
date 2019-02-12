@@ -160,9 +160,14 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Config\appSettings.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="BLL\SimpleBot.BLL.csproj">
+      <Project>{9720ae37-c589-4f31-b782-fbb21c97e908}</Project>
+      <Name>SimpleBot.BLL</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

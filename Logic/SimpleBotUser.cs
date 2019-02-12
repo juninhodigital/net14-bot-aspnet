@@ -1,8 +1,6 @@
 ﻿using System.Configuration;
 using System.Threading.Tasks;
-
-using MongoDB.Bson;
-using MongoDB.Driver;
+using SimpleBot.BLL;
 
 namespace SimpleBot.Logic
 {
@@ -12,29 +10,19 @@ namespace SimpleBot.Logic
 
         public string Reply(SimpleMessage message)
         {
-            SaveMessage(message.Text);
+            SaveMessage(message.Text).Wait();
 
             return $"{message.User} disse '{message.Text}";
         }
 
         private async Task SaveMessage(string message)
         {
-            var conn = ConfigurationManager.AppSettings["ConnectionString"];
+            var client = new BLL.Message();
 
-            var client = new MongoClient(conn);
-
-            var db = client.GetDatabase("demo");
-            var col = db.GetCollection<BsonDocument>("messages");
-
-            var document = new BsonDocument
-            {
-                {"message", message},
-            };
-
-            await col.InsertOneAsync(document);
+            await client.SaveMessage(message);
 
             client = null;
-            db = null;
+
         } 
 
         #endregion
